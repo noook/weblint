@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import argparse, coloredlogs, logging
+import argparse, coloredlogs, logging, inspect
 
 from tests.response_time import response_time
+from tests.ssl import check_ssl
 
 logger = logging.getLogger(__name__)
 coloredlogs.DEFAULT_LOG_FORMAT = "%(asctime)s %(message)s"
@@ -12,22 +13,40 @@ coloredlogs.install(logger=logger)
 def parse_args():
     parser = argparse.ArgumentParser(
         description="""
-            Runs a list of test on a given url. Run this
-            script with the help flag (-h or --help) to to see the
-            list of flags
+            Runs a list of test on a given url.
+            Choose specific tests with the following flags
         """
     )
+    tests = parser.add_argument_group("tests", "List of tests that will be realized")
     parser.add_argument("urls", nargs="+", help="URLs on which the tests will be made.")
+    tests.add_argument(
+        "--response-time",
+        dest="response_time",
+        help="Checks response time for the given URLs",
+        action="store_true",
+    )
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    tests = {
+        key: getattr(inspect.getmodule(main), key)
+        for (key, value) in vars(args).items()
+        if key is not "urls" and key in dir(inspect.getmodule(main)) and value is True
+    }
+
+    return args.urls, tests
+
+
+# Register tests here - Arguments "dest" must be the the same as the function name
+available_tests = {"response_time": response_time, "check_ssl": check_ssl}
 
 
 def main():
-    args = parse_args()
+    urls, tests = parse_args()
+    list = tests.items() if len(tests.items()) > 0 else available_tests.items()
 
-    for url in args.urls:
-        # Put tests functions here
-        logger.info(response_time(url))
+    for url in urls:
+        for (name, test) in list:
+            logger.info(test(url))
 
 
 if __name__ == "__main__":
