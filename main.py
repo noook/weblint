@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-import math, argparse, requests, json, time, coloredlogs, logging
+import argparse, coloredlogs, logging
+
+from tests.response_time import response_time
 
 logger = logging.getLogger(__name__)
 coloredlogs.DEFAULT_LOG_FORMAT = "%(asctime)s %(message)s"
@@ -16,22 +18,16 @@ def parse_args():
         """
     )
     parser.add_argument("urls", nargs="+", help="URLs on which the tests will be made.")
+
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+
     for url in args.urls:
         # Put tests functions here
-        request_time(url)
-
-
-def request_time(url):
-    begin = time.process_time_ns()
-    requests.get(url)
-    end = time.process_time_ns()
-    difference = (end - begin) / (1 * math.pow(10, 6))  #  Convert ns to ms
-    logger.info(f"[{url}] Response time : {difference} ms")
+        logger.info(response_time(url))
 
 
 if __name__ == "__main__":
