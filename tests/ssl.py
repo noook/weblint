@@ -1,6 +1,6 @@
 import requests
 
 
-def check_ssl(url):
+def check_ssl(url, param):
     response = requests.get(url)
-    print(response)
+    return ""  # response.headers
