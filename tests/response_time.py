@@ -2,7 +2,7 @@ from time import process_time_ns
 import requests, math
 
 
-def response_time(url, param):
+def response_time(url, param=None):
     begin = process_time_ns()
     requests.get(url)
     end = process_time_ns()
