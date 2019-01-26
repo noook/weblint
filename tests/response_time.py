@@ -1,5 +1,9 @@
 from time import process_time
-import requests, math
+import requests, logging, coloredlogs, math
+
+logger = logging.getLogger(__name__)
+coloredlogs.DEFAULT_LOG_FORMAT = "%(asctime)s %(message)s"
+coloredlogs.install(logger=logger)
 
 
 def response_time(url, param=None):
@@ -7,6 +11,6 @@ def response_time(url, param=None):
     requests.get(url)
     end = process_time()
 
-    difference = (end - begin) / (1 * math.pow(10, -3))  #  Convert ns to ms
-    return f"[{url}] Response time : {difference} ms"
+    difference = round((end - begin) / (1 * math.pow(10, -3)), 2)  #  Convert ns to ms
+    logger.info(f"[{url}] Response time : {difference} ms")
 

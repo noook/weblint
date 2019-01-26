@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
-import argparse, coloredlogs, logging, inspect
+import argparse, inspect
 
 from tests.response_time import response_time
-from tests.ssl import check_ssl
-
-logger = logging.getLogger(__name__)
-coloredlogs.DEFAULT_LOG_FORMAT = "%(asctime)s %(message)s"
-coloredlogs.install(logger=logger)
+from tests.html import check_img_alt
 
 
 def parse_args():
@@ -28,6 +24,14 @@ def parse_args():
         help="Checks response time for the given URLs",
     )
 
+    tests.add_argument(
+        "--img-alt",
+        nargs="?",
+        const=True,
+        dest="check_img_alt",
+        help="Checks if all images have the `alt` attribute",
+    )
+
     args = parser.parse_args()
     tests = {
         key: getattr(inspect.getmodule(main), key)
@@ -46,13 +50,13 @@ def parse_args():
 
 
 # Register tests here - Arguments "dest" must be the the same as the function name
-default_tests = {"response_time": response_time, "check_ssl": check_ssl}
+default_tests = {"response_time": response_time, "check_img_alt": check_img_alt}
 
 
 def defaults(urls):
     for url in urls:
         for (name, test) in default_tests.items():
-            logger.info(test(url))
+            test(url)
 
 
 def main():
@@ -62,7 +66,7 @@ def main():
     else:
         for url in urls:
             for (name, test) in tests.items():
-                logger.info(test(url, params[name]))
+                test(url, params[name])
 
 
 if __name__ == "__main__":
