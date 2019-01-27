@@ -32,6 +32,14 @@ def parse_args():
         help="Checks if all images have the `alt` attribute",
     )
 
+    # tests.add_argument(
+    #     "--test-name", # Flag name
+    #     nargs="?", # Allows passing a value (--arg="value")
+    #     const=True, # Just store True if no argument
+    #     dest="function_to_call", # Function associated to the test
+    #     help="This is the description of the test", # Test description
+    # )
+
     args = parser.parse_args()
     tests = {
         key: getattr(inspect.getmodule(main), key)
