@@ -18,10 +18,13 @@ def check_img_alt(url, param=None):
             logger.error(f'[{url}] "alt" cannot be empty {img}')
 
 
-def check_if_link_working(url, param=None):
+def check_404(url, param=None):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     for link in soup.find_all("a"):
+        check_slash = url[-1:]
+        if check_slash != "/":
+            url = url + "/"
         response = requests.get(url + link.get("href"))
         data = response.status_code
         if data == 404:

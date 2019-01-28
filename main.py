@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-from tests.html import check_img_alt, check_duplicate_id
+from tests.html import check_img_alt, check_duplicate_id, check_404
 from tests.cors import cors_checker
-from tests.html import check_img_alt, check_if_link_working
 import argparse
 import inspect
 
@@ -16,8 +15,8 @@ def parse_args():
             Choose specific tests with the following flags
         """
     )
-    tests = parser.add_argument_group(
-        "tests", "List of tests that will be realized")
+    tests = parser.add_argument_group("tests", "List of tests that will be realized")
+
     parser.add_argument("urls", nargs="+",
                         help="URLs on which the tests will be made.")
 
@@ -38,10 +37,10 @@ def parse_args():
     )
 
     tests.add_argument(
-        "--href-check",
+        "--check-404",
         nargs="?",
         const=True,
-        dest="check_if_link_working",
+        dest="check_404",
         help="Checking if the links are working",
     )
 
@@ -90,7 +89,7 @@ def parse_args():
 default_tests = {
     "check_img_alt": check_img_alt,
     "response_time": response_time,
-    "check_if_link_working": check_if_link_working,
+    "check_404": check_404,
     "cors_checker": cors_checker,
     "check_duplicate_id": check_duplicate_id,
 }
