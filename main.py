@@ -38,7 +38,7 @@ def parse_args():
         nargs="?",
         const=True,
         dest="cors_checker",
-        help="Checks if the site is cors compatible"
+        help="Checks if the site is cors compatible",
     )
 
     # tests.add_argument(
@@ -67,7 +67,11 @@ def parse_args():
 
 
 # Register tests here - Arguments "dest" must be the the same as the function name
-default_tests = {"check_img_alt": check_img_alt, "response_time": response_time,"cors_checker": cors_checker}
+default_tests = {
+    "check_img_alt": check_img_alt,
+    "response_time": response_time,
+    "cors_checker": cors_checker,
+}
 
 
 def defaults(urls):
