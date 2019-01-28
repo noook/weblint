@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-import argparse, inspect
+from tests.html import check_img_alt, check_duplicate_id, check_404
+from tests.cors import cors_checker
+import argparse
+import inspect
 
 from tests.response_time import response_time
-from tests.cors import cors_checker
-from tests.html import check_img_alt, check_duplicate_id
 
 
 def parse_args():
@@ -15,7 +16,9 @@ def parse_args():
         """
     )
     tests = parser.add_argument_group("tests", "List of tests that will be realized")
-    parser.add_argument("urls", nargs="+", help="URLs on which the tests will be made.")
+
+    parser.add_argument("urls", nargs="+",
+                        help="URLs on which the tests will be made.")
 
     tests.add_argument(
         "--response-time",
@@ -34,12 +37,21 @@ def parse_args():
     )
 
     tests.add_argument(
+        "--check-404",
+        nargs="?",
+        const=True,
+        dest="check_404",
+        help="Checking if the links are working",
+    )
+
+    tests.add_argument(
         "--cors-check",
         nargs="?",
         const=True,
         dest="cors_checker",
         help="Checks if the site is cors compatible",
     )
+
     tests.add_argument(
         "--duplicate-ids",
         nargs="?",
@@ -77,6 +89,7 @@ def parse_args():
 default_tests = {
     "check_img_alt": check_img_alt,
     "response_time": response_time,
+    "check_404": check_404,
     "cors_checker": cors_checker,
     "check_duplicate_id": check_duplicate_id,
 }
