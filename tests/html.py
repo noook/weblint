@@ -22,9 +22,25 @@ def check_if_link_working(url, param=None):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     for link in soup.find_all("a"):
-        if link.get("href") != "/":
-            response = requests.get(url + link.get("href"))
-            data = response.status_code
-            if data == 404:
-                logger.error(
-                    f'[{link.get("href")}] Link is redirecting to a 404 error code')
+        response = requests.get(url + link.get("href"))
+        data = response.status_code
+        if data == 404:
+            logger.error(
+                f'[{link.get("href")}] Link is redirecting to a 404 error code')
+
+
+def check_duplicate_id(url, param=None):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    ids = {}
+    for tag in soup.find_all(True):
+        if tag.has_attr("id"):
+            if len(tag.attrs["id"]) is 0:
+                logger.error(f'[{url}] "id" attribute cannot be empty {tag}')
+            else:
+                if tag.attrs["id"] in ids:
+                    ids[tag.attrs["id"]] += 1
+                else:
+                    ids[tag.attrs["id"]] = 1
+    for (id, occurr) in [(id, occurr) for (id, occurr) in ids.items() if occurr > 1]:
+        logger.error(f"[{url}] Duplicate ID '{id}' on the page")

@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
+from tests.html import check_img_alt, check_duplicate_id
+from tests.cors import cors_checker
+from tests.html import check_img_alt, check_if_link_working
 import argparse
 import inspect
 
 from tests.response_time import response_time
-from tests.html import check_img_alt, check_if_link_working
 
 
 def parse_args():
@@ -43,6 +45,22 @@ def parse_args():
         help="Checking if the links are working",
     )
 
+    tests.add_argument(
+        "--cors-check",
+        nargs="?",
+        const=True,
+        dest="cors_checker",
+        help="Checks if the site is cors compatible",
+    )
+
+    tests.add_argument(
+        "--duplicate-ids",
+        nargs="?",
+        const=True,
+        dest="check_duplicate_id",
+        help="Checks the unicity of all html elements' ids",
+    )
+
     # tests.add_argument(
     #     "--test-name", # Flag name
     #     nargs="?", # Allows passing a value (--arg="value")
@@ -69,9 +87,13 @@ def parse_args():
 
 
 # Register tests here - Arguments "dest" must be the the same as the function name
-default_tests = {"response_time": response_time,
-                 "check_img_alt": check_img_alt,
-                 "check_if_link_working": check_if_link_working}
+default_tests = {
+    "check_img_alt": check_img_alt,
+    "response_time": response_time,
+    "check_if_link_working": check_if_link_working,
+    "cors_checker": cors_checker,
+    "check_duplicate_id": check_duplicate_id,
+}
 
 
 def defaults(urls):
