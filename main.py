@@ -4,6 +4,7 @@ import argparse, inspect
 
 from tests.response_time import response_time
 from tests.html import check_img_alt
+from tests.cors import cors_checker
 
 
 def parse_args():
@@ -32,6 +33,14 @@ def parse_args():
         help="Checks if all images have the `alt` attribute",
     )
 
+    tests.add_argument(
+        "--cors-check",
+        nargs="?",
+        const=True,
+        dest="cors_checker",
+        help="Checks if the site is cors compatible"
+    )
+
     # tests.add_argument(
     #     "--test-name", # Flag name
     #     nargs="?", # Allows passing a value (--arg="value")
@@ -58,7 +67,7 @@ def parse_args():
 
 
 # Register tests here - Arguments "dest" must be the the same as the function name
-default_tests = {"response_time": response_time, "check_img_alt": check_img_alt}
+default_tests = {"cors_checker": cors_checker}
 
 
 def defaults(urls):
