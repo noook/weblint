@@ -3,8 +3,8 @@
 import argparse, inspect
 
 from tests.response_time import response_time
-from tests.html import check_img_alt
 from tests.cors import cors_checker
+from tests.html import check_img_alt, check_duplicate_id
 
 
 def parse_args():
@@ -40,6 +40,13 @@ def parse_args():
         dest="cors_checker",
         help="Checks if the site is cors compatible",
     )
+    tests.add_argument(
+        "--duplicate-ids",
+        nargs="?",
+        const=True,
+        dest="check_duplicate_id",
+        help="Checks the unicity of all html elements' ids",
+    )
 
     # tests.add_argument(
     #     "--test-name", # Flag name
@@ -71,6 +78,7 @@ default_tests = {
     "check_img_alt": check_img_alt,
     "response_time": response_time,
     "cors_checker": cors_checker,
+    "check_duplicate_id": check_duplicate_id,
 }
 
 
