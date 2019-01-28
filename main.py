@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import argparse, inspect
+import argparse
+import inspect
 
 from tests.response_time import response_time
-from tests.html import check_img_alt
+from tests.html import check_img_alt, check_if_link_working
 
 
 def parse_args():
@@ -13,8 +14,10 @@ def parse_args():
             Choose specific tests with the following flags
         """
     )
-    tests = parser.add_argument_group("tests", "List of tests that will be realized")
-    parser.add_argument("urls", nargs="+", help="URLs on which the tests will be made.")
+    tests = parser.add_argument_group(
+        "tests", "List of tests that will be realized")
+    parser.add_argument("urls", nargs="+",
+                        help="URLs on which the tests will be made.")
 
     tests.add_argument(
         "--response-time",
@@ -30,6 +33,14 @@ def parse_args():
         const=True,
         dest="check_img_alt",
         help="Checks if all images have the `alt` attribute",
+    )
+
+    tests.add_argument(
+        "--href-check",
+        nargs="?",
+        const=True,
+        dest="check_if_link_working",
+        help="Checking if the links are working",
     )
 
     # tests.add_argument(
@@ -58,7 +69,9 @@ def parse_args():
 
 
 # Register tests here - Arguments "dest" must be the the same as the function name
-default_tests = {"response_time": response_time, "check_img_alt": check_img_alt}
+default_tests = {"response_time": response_time,
+                 "check_img_alt": check_img_alt,
+                 "check_if_link_working": check_if_link_working}
 
 
 def defaults(urls):
