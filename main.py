@@ -17,8 +17,7 @@ def parse_args():
     )
     tests = parser.add_argument_group("tests", "List of tests that will be realized")
 
-    parser.add_argument("urls", nargs="+",
-                        help="URLs on which the tests will be made.")
+    parser.add_argument("urls", nargs="+", help="URLs on which the tests will be made.")
 
     tests.add_argument(
         "--response-time",
@@ -87,8 +86,8 @@ def parse_args():
 
 # Register tests here - Arguments "dest" must be the the same as the function name
 default_tests = {
-    "check_img_alt": check_img_alt,
     "response_time": response_time,
+    "check_img_alt": check_img_alt,
     "check_404": check_404,
     "cors_checker": cors_checker,
     "check_duplicate_id": check_duplicate_id,
