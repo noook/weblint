@@ -25,7 +25,10 @@ def check_404(url, param=None):
         check_slash = url[-1:]
         if check_slash != "/":
             url = url + "/"
-        response = requests.get(url + link.get("href"))
+        if link.get("href") == url:
+            response = requests.get(link.get("href"))
+        else:
+            response = requests.get(str(url), link.get("href"))
         data = response.status_code
         if data == 404:
             logger.error(
