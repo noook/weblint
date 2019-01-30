@@ -19,3 +19,6 @@ $ ./main.py https://nook.sh https://google.com
 > 2019-01-21 22:08:26 [https://nook.sh] Response time : 23.51 ms
 > 2019-01-21 22:08:26 [https://google.com] Response time : 18.056 ms
 ```
+
+When running the script with no flag, all the tests will be run. If you want to run only a bunch of specific tests, add the flags when you run the script.
+You can have the list of available tests by running the script with the `-h` or `--help` flag.
